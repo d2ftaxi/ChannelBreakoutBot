@@ -54,22 +54,22 @@ def describe(params):
         profitFactor = 0
     else:
         #テスト
-        pl, profitFactor, maxLoss, winPer = channelBreakOut.describeResult()
+        pl, profitFactor, maxLoss, winPer, ev = channelBreakOut.describeResult()
     return [pl, profitFactor, i, l, j, k, is_blacklist]
 
 def optimization(candleTerm, cost, fileName, core, useBlackList):
     #optimizeList.jsonの読み込み
-    f = open('optimizeList.json', 'r', encoding="utf-8")
+    f = open('config/optimizeList.json', 'r', encoding="utf-8")
     config = json.load(f)
     entryAndCloseTerm = config["entryAndCloseTerm"]
     rangeThAndrangeTerm = config["rangeThAndrangeTerm"]
     waitTermAndwaitTh = config["waitTermAndwaitTh"]
     rangePercentList = config["rangePercentList"]
     linePattern = config["linePattern"]
-    randomUpper = config["randomUpper"]
+    termUpper = config["termUpper"]
 
-    if "R" in linePattern:
-        entryAndCloseTerm = list(itertools.product(range(2,randomUpper), range(2,randomUpper)))
+    if "COMB" in linePattern:
+        entryAndCloseTerm = list(itertools.product(range(2,termUpper), range(2,termUpper)))
 
     total = len(entryAndCloseTerm) * len(rangeThAndrangeTerm) * len(waitTermAndwaitTh) * len(rangePercentList)
 
@@ -188,7 +188,7 @@ if __name__ == '__main__':
     logging.info('Wait...')
 
     #config.jsonの読み込み
-    f = open('config.json', 'r', encoding="utf-8")
+    f = open('config/config.json', 'r', encoding="utf-8")
     config = json.load(f)
     logging.info('candleTerm:%s cost:%s core:%s fileName:%s',config["candleTerm"],config["cost"],config["core"],config["fileName"])
 
